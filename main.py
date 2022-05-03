@@ -1,4 +1,7 @@
-from win32api import EnumDisplayDevices, EnumDisplaySettings
+try:
+    from win32api import EnumDisplayDevices, EnumDisplaySettings
+except:
+    pass
 from platform import platform
 from tools import *
 import pygame
@@ -8,7 +11,10 @@ from json import loads, dumps
 pygame.init()
 
 WIDTH, HEIGHT = 1280, 720
-FRAMERATE = EnumDisplaySettings(EnumDisplayDevices().DeviceName, -1).DisplayFrequency if "Windows" in platform() else 60
+if "Windows" in platform():
+    FRAMERATE = EnumDisplaySettings(EnumDisplayDevices().DeviceName, -1).DisplayFrequency
+else:
+    FRAMERATE = 60  # less than subpar way to do this probably
 pygame.display.set_caption("you died!")
 screen = pygame.display.set_mode([WIDTH, HEIGHT])
 font = pygame.font.Font(get_path("Arialn.ttf"), 36)
